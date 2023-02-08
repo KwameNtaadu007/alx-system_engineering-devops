@@ -8,3 +8,4 @@ This command creates a directory in /tmp/
 This command moves the file Betty into /tmp/my_first_directory
 This command deletes the file Betty from /tmp/my_first_directory
 This command deletes the directory in /tmp/
+This command changes the working directory to the previous one: cd -
