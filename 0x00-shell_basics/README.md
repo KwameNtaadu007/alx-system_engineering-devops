@@ -10,3 +10,4 @@ This command deletes the file Betty from /tmp/my_first_directory
 This command deletes the directory in /tmp/
 This command changes the working directory to the previous one: cd -
 This command lists all files in the current directory and the parent of the working directory: ls -a . .. /boot -l
+This command  that prints the type of the file: file iamafile
