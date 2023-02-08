@@ -12,3 +12,4 @@ This command changes the working directory to the previous one: cd -
 This command lists all files in the current directory and the parent of the working directory: ls -a . .. /boot -l
 This command  that prints the type of the file: file iamafile
 This command creates a symbolic link to /bin/ls file: ln -s /bin/ls __ls__
+This command creates copies all the HTML files from the current working directory to the parent of the working directory: cp un *.html ../
