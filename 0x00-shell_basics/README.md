@@ -16,3 +16,4 @@ This command creates copies all the HTML files from the current working director
 This command moves all files beginning with an uppercase letter to the directory /tmp/u: mv [[upper]]* /tmp/u
 This command deletes all files in the current working directory that end with the character ~: rm *~ 
 This command creates a script that creates the directories welcome/to/school: mkdir -p welcome/to/school
+This command lists all the files and directories of the current directory, separated by commas 
