@@ -16,3 +16,4 @@ changes the group owner to school for the file hello: chgrp school hello
 This command changes the owner to vincent and the group owner to staff for all the files and directories in the working directory: chown vincent:staff *
 This command changes the owner and the group owner of _hello to vincent and staff respectively: chown -h vincent:staff _hello
 This command changes the owner of the file hello to betty only if it is owned by the user guillaume: chown --from=guillaume betty hello
+This command will play the StarWars IV episode in the terminal: telnet towel.blinkenlights.nl
