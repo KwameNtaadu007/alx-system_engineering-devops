@@ -10,4 +10,4 @@ This command adds execution permission to the owner, the group owner and the oth
 This command sets the permission to the file hello: chmod 007
 This command sets the mode of the file hello to rwxr-x-wx : chmod 753
 This command sets the mode of the file hello the same as olleh’s mode: chmod --reference-olleh hello
-This command adds execute permission to all subdirectories of the current directory for the owner, the group owner and all other users: chmod 753
+This command adds execute permission to all subdirectories of the current directory for the owner, the group owner and all other users: chmod -R +X
