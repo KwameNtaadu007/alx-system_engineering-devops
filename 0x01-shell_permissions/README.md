@@ -11,3 +11,4 @@ This command sets the permission to the file hello: chmod 007
 This command sets the mode of the file hello to rwxr-x-wx : chmod 753
 This command sets the mode of the file hello the same as olleh’s mode: chmod --reference-olleh hello
 This command adds execute permission to all subdirectories of the current directory for the owner, the group owner and all other users: chmod -R +X
+This command creates a directory called my_dir with permissions 751 in the working directory: mkdir -m 751 my_dir
