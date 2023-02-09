@@ -13,3 +13,4 @@ This command lists all files in the current directory and the parent of the work
 This command  that prints the type of the file: file iamafile
 This command creates a symbolic link to /bin/ls file: ln -s /bin/ls __ls__
 This command creates copies all the HTML files from the current working directory to the parent of the working directory: cp un *.html ../
+This command moves all files beginning with an uppercase letter to the directory /tmp/u: mv [[upper]]* /tmp/u
