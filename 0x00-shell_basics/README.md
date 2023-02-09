@@ -17,3 +17,4 @@ This command moves all files beginning with an uppercase letter to the directory
 This command deletes all files in the current working directory that end with the character ~: rm *~ 
 This command creates a script that creates the directories welcome/to/school: mkdir -p welcome/to/school
 This command lists all the files and directories of the current directory, separated by commas 
+This command creates a magic file school.mgc that can be used with the command file to detect School data files: 0 string SHOOL School data ;! :mime School; file -C -m school.mgc 
