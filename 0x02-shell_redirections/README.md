@@ -5,3 +5,4 @@ This command prints the content of /etc/passwd. passwd contains user details
 This command prints content of tw different files
 
 This command prints the last 10 lines of a file:tail filename
+This command prints the first lines of a file: head file1
