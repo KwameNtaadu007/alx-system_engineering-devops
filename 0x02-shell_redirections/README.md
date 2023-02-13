@@ -4,3 +4,4 @@ This command test teaches about "/". It helps in printing special characters wit
 This command prints the content of /etc/passwd. passwd contains user details
 This command prints content of tw different files
 
+This command prints the last 10 lines of a file:tail filename
