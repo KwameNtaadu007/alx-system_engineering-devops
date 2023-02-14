@@ -9,3 +9,4 @@ Create a local variable "BEST"
 Created a global variable
 Performed and arithmethic operation: echo $((128,$TRUEKNOWLEDGE))
 This command performs a division:echo $(($POWER / $DIVIDE))
+We test square of variables: a**2
