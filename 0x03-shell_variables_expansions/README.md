@@ -10,3 +10,4 @@ Created a global variable
 Performed and arithmethic operation: echo $((128,$TRUEKNOWLEDGE))
 This command performs a division:echo $(($POWER / $DIVIDE))
 We test square of variables: a**2
+Performed a binary to base conversion: echo "$((2#$BINARY))"
