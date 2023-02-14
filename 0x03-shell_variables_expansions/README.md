@@ -12,3 +12,4 @@ This command performs a division:echo $(($POWER / $DIVIDE))
 We test square of variables: a**2
 Performed a binary to base conversion: echo "$((2#$BINARY))"
 This script prints all possible combinations of two letters, except oo
+This command prints a number with two decimal places
