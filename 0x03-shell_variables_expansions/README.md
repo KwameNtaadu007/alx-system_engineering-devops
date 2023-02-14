@@ -16,3 +16,4 @@ This command prints a number with two decimal places
 This command converts a number from base 10 to base 16.
 This command encodes and decodes text using the rot13 encryption
 This command prints every other line from the input, starting with the first line.
+This script adds the two numbers stored in the environment variables WATER and STIR and prints the result.
