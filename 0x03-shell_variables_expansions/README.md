@@ -15,3 +15,4 @@ This script prints all possible combinations of two letters, except oo
 This command prints a number with two decimal places
 This command converts a number from base 10 to base 16.
 This command encodes and decodes text using the rot13 encryption
+This command prints every other line from the input, starting with the first line.
