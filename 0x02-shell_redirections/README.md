@@ -14,3 +14,4 @@ This command "find . -type f -name "*.js" -delete" deletes all the regular files
 This is a command  that counts the number of directories and sub-directories in the current directory: find . -type d ! -path . | wc -l
 This command displays the 10 newest files in the current directory:ls -t . | head
 This command takes a list of words as input and prints only words that appear exactly once:sort | uniq -u
+This command Display lines containing the pattern “root” from the file /etc/passwd:egrep "root" /etc/passwd
