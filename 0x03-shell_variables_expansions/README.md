@@ -13,3 +13,4 @@ We test square of variables: a**2
 Performed a binary to base conversion: echo "$((2#$BINARY))"
 This script prints all possible combinations of two letters, except oo
 This command prints a number with two decimal places
+This command converts a number from base 10 to base 16.
