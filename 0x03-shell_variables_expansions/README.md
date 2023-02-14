@@ -8,3 +8,4 @@ This command prints local variables:set
 Create a local variable "BEST"
 Created a global variable
 Performed and arithmethic operation: echo $((128,$TRUEKNOWLEDGE))
+This command performs a division:echo $(($POWER / $DIVIDE))
