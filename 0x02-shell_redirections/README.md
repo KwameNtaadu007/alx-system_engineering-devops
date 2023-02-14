@@ -19,3 +19,4 @@ This command Display the number of lines that contain the pattern “bin” in t
 This command display lines containing the pattern “root” and 3 lines after them in the file /etc/passwd.:egrep -A 3 "root" /etc/passwd
 This command displays all the lines in the file /etc/passwd that do not contain the pattern “bin” : egrep -V "bin" /etc/passwd
 Display all lines of the file /etc/ssh/sshd_config starting with a letter.
+Create a script that removes all letters c and C from input.
