@@ -16,3 +16,4 @@ This command displays the 10 newest files in the current directory:ls -t . | hea
 This command takes a list of words as input and prints only words that appear exactly once:sort | uniq -u
 This command Display lines containing the pattern “root” from the file /etc/passwd:egrep "root" /etc/passwd
 This command Display the number of lines that contain the pattern “bin” in the file /etc/passwd:egrep -C bin /etc/passwd
+This command display lines containing the pattern “root” and 3 lines after them in the file /etc/passwd.:egrep -A 3 "root" /etc/passwd
