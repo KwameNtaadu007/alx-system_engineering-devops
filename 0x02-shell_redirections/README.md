@@ -8,3 +8,4 @@ This command prints the last 10 lines of a file:tail filename
 This command prints the first lines of a file: head file1
 This command prints the third line of a file with a pipe: head -3 file1 | -1 file1
 Creating a file with character complicated name
+This command writes into the file ls_cwd_content the result of the command ls -la
