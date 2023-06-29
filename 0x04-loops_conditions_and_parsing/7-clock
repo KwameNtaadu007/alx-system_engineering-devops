@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+hour=0
+minute=1
+count=0
+
+while [[ $count -lt 70 ]]
+do
+    printf "%02d:%02d\n" $hour $minute
+
+    minute=$((minute + 1))
+    if [[ $minute -gt 59 ]]; then
+        minute=1
+        hour=$((hour + 1))
+        if [[ $hour -gt 12 ]]; then
+            hour=0
+        fi
+    fi
+
+    count=$((count + 1))
+done | head -n 70
+
