@@ -1,22 +1,18 @@
 #!/usr/bin/env bash
+# Script which displays 12 hours: 0-12 and 59 minutes: 1-59
 
 hour=0
-minute=1
-count=0
 
-while [[ $count -lt 70 ]]
+while [ "$hour" -le 12 ]
 do
-    printf "%02d:%02d\n" $hour $minute
+	echo "Hour: $hour"
+	(( hour++ ))
 
-    minute=$((minute + 1))
-    if [[ $minute -gt 59 ]]; then
-        minute=1
-        hour=$((hour + 1))
-        if [[ $hour -gt 12 ]]; then
-            hour=0
-        fi
-    fi
-
-    count=$((count + 1))
-done | head -n 70
+	minute=1
+	while [ "$minute" -le 59 ]
+	do
+		echo "$minute"
+		(( minute++ ))
+	done
+done
 

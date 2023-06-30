@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
+# Script which displays the content of the current directory
 
-for file in *; do
-    if [[ -f $file && ! $file == .* ]]; then
-        filename=$(basename "$file")
-        filename="${filename#*-}"
-        echo "$filename"
-    fi
+files=$(ls)
+
+for file in $files; do
+  echo "$file" | cut -d '-' -f2
 done
 

@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
-#This script prints Bad luck,Good luck,Best luck at
-#counter 4,8,9 above respectively
+#This script prints Bad luck,Good luck,Best luck at counter 4,8,9 above respectively
 
-counter=1
-
-while [[ $counter -le 10 ]]
+counter=0
+while [ "$counter" -lt 10 ]
 do
-	if [[ $counter -eq 4 ]]; then
-		echo "Bad luck"
-	elif [[ $counter -eq 8 ]]; then
-		echo "Good luck"
+	if [ "$counter" -eq 3 ]; then
+		echo "bad luck"
+	elif [ "$counter" -eq 7 ]; then
+		echo "good luck"
 	else
 		echo "Best School"
 	fi
-
-	counter=$((counter + 1))
+	(( counter++ ))
 done
-
