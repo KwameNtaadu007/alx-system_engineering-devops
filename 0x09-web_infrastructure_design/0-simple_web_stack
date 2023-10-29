@@ -1,0 +1,64 @@
+0. Simple web stack
+
+To access the website hosted on our server, let’s assume that a user types in the URL www.foobar.com in their browser. The domain name foobar.com is a unique string of text that identifies our website on the internet. It is configured with a DNS record that points to our server’s IP address 8.8.8.8. DNS stands for Domain Name System, and it is responsible for translating human-readable domain names (eg: foobar.com) into IP addresses (eg: 8.8.8.8) that computers can understand.
+
+Design of a One-Server Web Infrastructure
+https://drive.google.com/file/d/166A1I7qxYRA6bn_-ZW4gr7oBlfMZomDl/view?usp=sharing
+
+Our web infrastructure consists of a single server that hosts all the components required to run our website. The server is a computer system that stores and manages all the files required to run our website, including the application files, database, and web server software.
+
+The web server software we use is Nginx. Its primary role is to receive incoming requests from users’ browsers and send back the appropriate response. It does this by communicating with the application server, which is responsible for running our website’s business logic. The application server processes incoming requests from the web server and sends back responses that are then sent back to the user’s browser.
+
+The database we use is MySQL. It stores all the data required by our website, such as user information, product details, etc.
+
+When a user types in www.foobar.com in their browser, their computer sends an HTTP request to our server using the internet protocol (IP). The server receives this request and sends back an HTTP response containing the requested information.
+
+Despite fulfilling the basic requirements, this one-server web infrastructure has some significant issues.
+Firstly, since we are using a single server, it is a single point of failure (SPOF). If anything goes wrong with this server, our website will go down until we can fix it.
+
+Secondly, when we need to perform maintenance tasks such as deploying new code or updating software, we need to take down our web server temporarily. This results in downtime for our website.
+
+Finally, if we experience too much incoming traffic, our infrastructure will not be able to handle it since we cannot scale it up easily.
+To address these issues, a more robust and scalable infrastructure would involve implementing a load balancer, multiple servers, and a cloud-based or distributed approach. However, this simple one-server design does serve as a starting point for smaller projects or early-stage development.
+
+
+##Some specifics about this Infrastructure:
+-What is a Server:
+
+A server is a computer system that serves as a centralized resource, providing services and data to other computers (clients) over a network, such as the internet. In this case, our server is hosting the web infrastructure for the website.
+
+-Role of the Domain Name:
+
+The domain name, "www.foobar.com," serves as a user-friendly and human-readable address for the website. It provides an easy-to-remember name that abstracts the underlying IP address (8.8.8.8). When users enter "www.foobar.com" in their web browser, the DNS resolves it to the server's IP address, allowing the user to access the website.
+
+-Type of DNS Record "www" in www.foobar.com:
+
+The "www" in "www.foobar.com" is a subdomain. It is commonly used to distinguish between different services hosted on the same domain. In this case, "www" indicates the web service, and it has a DNS record known as a CNAME (Canonical Name) record that points to the domain apex or the main domain (foobar.com). The CNAME record allows "www.foobar.com" to resolve to the same IP address as "foobar.com."
+
+-Role of the Web Server (Nginx):
+
+The web server, in this case, Nginx, handles HTTP requests from clients (web browsers) and serves static content (like HTML, CSS, images) or passes dynamic content requests to the application server. It acts as an intermediary between the user's web browser and the application server, efficiently handling and responding to web requests.
+
+-Role of the Application Server:
+
+The application server is responsible for processing dynamic content requests. It runs the website's codebase and communicates with the database to fetch or modify data as needed. In this design, the application server is separate from the web server, allowing for more efficient processing of application-specific tasks.
+
+-Role of the Database (MySQL):
+
+The database (MySQL) stores and manages the website's data. It can handle read and write operations, allowing the application server to store and retrieve information required by the website. Common data stored in a database includes user information, posts, comments, and other relevant data.
+
+-Server Communication with the User's Computer:
+
+When a user accesses the website, their web browser sends an HTTP request to the server (8.8.8.8) over the internet. The server processes the request, which may involve static content being served directly by the web server (Nginx) or dynamic content requests being forwarded to the application server. The application server then interacts with the database (MySQL) if necessary to retrieve or update data. Finally, the server sends an HTTP response back to the user's web browser, which renders and displays the website.
+
+-Single Point of Failure (SPOF):
+Since all services are running on a single server, any failure of that server can lead to the entire website being inaccessible. This includes hardware failures, software crashes, or even network issues affecting the server.
+
+-Downtime during Maintenance:
+When performing maintenance tasks such as deploying new code or updates, the web server (Nginx) might need to be restarted. During this maintenance window, the website might be unavailable, causing downtime for users trying to access it.
+
+-Scalability Concerns:
+With only one server, this infrastructure cannot handle a large influx of incoming traffic effectively. As the website gains popularity and experiences increased user traffic, the server's resources might become insufficient, leading to slow response times or even crashes.
+
+
+

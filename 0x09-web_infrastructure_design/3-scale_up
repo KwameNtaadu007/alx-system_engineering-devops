@@ -1,0 +1,55 @@
+3. Scale up
+
+
+Design of a Three-Server Web Infrastructure with Load Balancer Cluster
+
+ Overview
+
+This design expands the previous infrastructure to include one more server, separating the components (web server, application server, and database) onto their own servers. It also configures the load balancer (HAproxy) as a cluster to enhance performance, fault tolerance, and scalability.
+
+ Components and their Roles
+
+1. Server 1 (Linux):
+   - Hosts the web server component (e.g., Nginx) to handle incoming HTTP requests.
+   - Serves static content like HTML, CSS, and images directly to clients.
+   - Passes dynamic content requests to the application server for processing.
+
+2. Server 2 (Linux):
+   - Acts as the application server to process dynamic content requests from the web server.
+   - Executes the website's codebase and interacts with the database to retrieve or update data.
+   - Communicates with the database server to handle application-specific tasks.
+
+3. Server 3 (Linux):
+   - Serves as the database server (e.g., MySQL) to store and manage the website's data.
+   - Handles read and write operations from the application server.
+   - Implements a Primary-Replica (Master-Slave) cluster to ensure data redundancy and database performance.
+
+4. Load Balancer Cluster (HAproxy):
+   - Configured as a cluster with two load balancer servers.
+   - Distributes incoming traffic across the web servers (Server 1 and Server 2) for load balancing and redundancy.
+   - Enhances performance and availability by directing client requests to the available servers.
+
+ Specifics about the Infrastructure
+
+Reasons for Additional Elements:
+
+- Additional Server (Server 2 - Application Server): Separating the application server from the web server allows for better resource utilization and scalability. It enables specialized configurations and optimization for each component.
+- Additional Server (Server 3 - Database): Isolating the database server from the application server enhances security and performance. It also facilitates the implementation of database clustering for improved data redundancy and high availability.
+- Load Balancer Cluster (HAproxy): Configuring the load balancer as a cluster provides redundancy and fault tolerance. In case one load balancer fails, the other can continue distributing traffic, ensuring continuous service availability.
+
+ Advantages of the Infrastructure
+
+1. Scalability: With each component (web server, application server, and database) hosted on separate servers, it becomes easier to scale resources independently based on the specific requirements of each component.
+
+2. Fault Tolerance: The load balancer cluster and the Primary-Replica database cluster enhance fault tolerance by distributing workloads and ensuring data redundancy. In case of a server or component failure, the infrastructure can continue to operate with reduced impact.
+
+3. Performance: Separating the components and using a load balancer cluster helps distribute incoming traffic evenly, preventing overloading on any single server and improving overall performance.
+
+4. Security: By isolating the database server from the application server and using firewalls, the infrastructure becomes more secure, minimizing the risk of unauthorized access and data breaches.
+
+5. High Availability: The clustering of load balancers and database servers ensures high availability. In the event of a server failure, the cluster can continue serving traffic and managing data without interruption.
+
+ Conclusion
+
+The three-server web infrastructure, split into separate components with a load balancer cluster, provides an improved level of performance, fault tolerance, and scalability. The web server, application server, and database each have dedicated resources, and the load balancer cluster ensures that incoming traffic is distributed efficiently. The use of the Primary-Replica cluster for the database adds data redundancy and high availability. Together, these elements create a robust and secure environment for hosting the website www.foobar.com.
+
