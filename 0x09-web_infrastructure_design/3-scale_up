@@ -1,55 +1,55 @@
-3. Scale up
-
-
-Design of a Three-Server Web Infrastructure with Load Balancer Cluster
-
- Overview
 
 This design expands the previous infrastructure to include one more server, separating the components (web server, application server, and database) onto their own servers. It also configures the load balancer (HAproxy) as a cluster to enhance performance, fault tolerance, and scalability.
 
- Components and their Roles
+ **Components and their Roles**
 
-1. Server 1 (Linux):
-   - Hosts the web server component (e.g., Nginx) to handle incoming HTTP requests.
-   - Serves static content like HTML, CSS, and images directly to clients.
-   - Passes dynamic content requests to the application server for processing.
+**Server 1**:
+- Web Server: Nginx
+- Firewall
+- SSL Termination
+- Monitoring Client
+- HAproxy Node 1 (Load Balancer)
 
-2. Server 2 (Linux):
-   - Acts as the application server to process dynamic content requests from the web server.
-   - Executes the website's codebase and interacts with the database to retrieve or update data.
-   - Communicates with the database server to handle application-specific tasks.
+**Server 2**:
+- Application Server
+- Firewall
+- Monitoring Client
+- HAproxy Node 2 (Load Balancer)
 
-3. Server 3 (Linux):
-   - Serves as the database server (e.g., MySQL) to store and manage the website's data.
-   - Handles read and write operations from the application server.
-   - Implements a Primary-Replica (Master-Slave) cluster to ensure data redundancy and database performance.
+**Server 3**:
+- Database: MySQL
+- Firewall
+- Monitoring Client
 
-4. Load Balancer Cluster (HAproxy):
-   - Configured as a cluster with two load balancer servers.
-   - Distributes incoming traffic across the web servers (Server 1 and Server 2) for load balancing and redundancy.
-   - Enhances performance and availability by directing client requests to the available servers.
+//Diagram
 
- Specifics about the Infrastructure
+1. **Web Server (Server 1)**:
+   - The web server (Nginx) is responsible for handling HTTP requests, serving static content, and acting as the entry point for user traffic.
+   - SSL termination at the web server is responsible for decrypting incoming HTTPS requests.
+   - A monitoring client collects server metrics and performance data to ensure the web server's health.
+   - HAproxy Node 1 is one of the load balancer nodes that will distribute traffic between the web and application servers.
 
-Reasons for Additional Elements:
+2. **Application Server (Server 2)**:
+   - The application server hosts the application code and processes dynamic content generation.
+   - A firewall is used to control and secure incoming and outgoing traffic to the application server.
+   - A monitoring client collects metrics and performance data to monitor the health of the application server.
+   - HAproxy Node 2 is the second node of the load balancer cluster, ensuring high availability for the application layer.
 
-- Additional Server (Server 2 - Application Server): Separating the application server from the web server allows for better resource utilization and scalability. It enables specialized configurations and optimization for each component.
-- Additional Server (Server 3 - Database): Isolating the database server from the application server enhances security and performance. It also facilitates the implementation of database clustering for improved data redundancy and high availability.
-- Load Balancer Cluster (HAproxy): Configuring the load balancer as a cluster provides redundancy and fault tolerance. In case one load balancer fails, the other can continue distributing traffic, ensuring continuous service availability.
+3. **Database Server (Server 3)**:
+   - The database server (MySQL) is responsible for storing and managing the website's data.
+   - A firewall is used to control and secure incoming and outgoing database traffic.
+   - A monitoring client collects metrics and performance data to monitor the health of the database server.
 
- Advantages of the Infrastructure
+**Why These Components**:
 
-1. Scalability: With each component (web server, application server, and database) hosted on separate servers, it becomes easier to scale resources independently based on the specific requirements of each component.
+- **Web Server and Application Server Separation**: Separating the web server and application server allows for scalability and load distribution. The web server can serve static content efficiently, while the application server can handle dynamic content generation, ensuring better performance.
 
-2. Fault Tolerance: The load balancer cluster and the Primary-Replica database cluster enhance fault tolerance by distributing workloads and ensuring data redundancy. In case of a server or component failure, the infrastructure can continue to operate with reduced impact.
+- **Load Balancer Cluster**: Using HAproxy configured as a cluster (Node 1 and Node 2) ensures high availability and load distribution. If one node fails, the other can take over, providing fault tolerance.
 
-3. Performance: Separating the components and using a load balancer cluster helps distribute incoming traffic evenly, preventing overloading on any single server and improving overall performance.
+- **Firewalls**: Firewalls are added to control and secure incoming and outgoing traffic to the web, application, and database servers, enhancing security.
 
-4. Security: By isolating the database server from the application server and using firewalls, the infrastructure becomes more secure, minimizing the risk of unauthorized access and data breaches.
+- **SSL Termination**: SSL termination at the web server allows for efficient handling of HTTPS traffic. The web server decrypts incoming requests and forwards them in plain text to the application server for processing.
 
-5. High Availability: The clustering of load balancers and database servers ensures high availability. In the event of a server failure, the cluster can continue serving traffic and managing data without interruption.
+- **Monitoring**: Monitoring clients are essential for tracking the health and performance of each component. They collect metrics, logs, and other data, which are sent to a monitoring service for analysis and alerting in case of issues.
 
- Conclusion
-
-The three-server web infrastructure, split into separate components with a load balancer cluster, provides an improved level of performance, fault tolerance, and scalability. The web server, application server, and database each have dedicated resources, and the load balancer cluster ensures that incoming traffic is distributed efficiently. The use of the Primary-Replica cluster for the database adds data redundancy and high availability. Together, these elements create a robust and secure environment for hosting the website www.foobar.com.
-
+By separating components, configuring a load balancer cluster, and implementing firewalls and monitoring, this infrastructure is better prepared for scaling up, ensuring high availability, and providing a more secure and reliable service.

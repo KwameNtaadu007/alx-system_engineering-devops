@@ -1,48 +1,58 @@
-##Secured and monitored web infrastructure
+This design builds on the distrubuted design by hosting www.foobar.com securely. It serves encrypted traffic over HTTPS, and is monitored. 
 
-In designing a secured and monitored three server web infrastructure that hosts the website www.foobar.com, we need to add 3 firewalls, 1 SSL certificate to serve www.foobar.com over HTTPS, and 3 monitoring clients (data collector for Sumologic or other monitoring services).
+ **Components and their Roles**
 
-Secured and monitored web infrastructure
-https://drive.google.com/file/d/12wpvSz5-MQ7Gbo7T8aE23eGSJpmT-sjh/view?usp=drive_link
+**Server 1**:
+- Web Server (Nginx)
+- Application Server
+- Application Files (Code Base)
+- Firewall 1
 
-Firewall 1: Located in front of the load balancer. Inspects and filters all incoming traffic, blocking malicious traffic and unauthorized access.
+**Server 2**:
+- Database: MySQL (Primary)
+- Firewall 2
 
-Firewall 2: Located between the load balancer and the web servers. Protects the web servers from direct attacks and only allows traffic from the load balancer to the web servers.
+**Server 3**:
+- Load Balancer: HAproxy (Terminating SSL)
+- Database: MySQL (Replica)
+- Firewall 3
 
-Firewall 3: Located between the web servers and the database server. Protects the database server from direct attacks and only allows traffic from the web servers to the database server.
+//Diagram
 
-#Load Balancer
-	-Distributes incoming traffic evenly across the web servers.
-	-Ensures that the website can handle high levels of traffic without any downtime.
+**Firewalls**:
+- Firewalls are added to enhance security by controlling incoming and outgoing network traffic. They help protect the servers from unauthorized access, prevent malicious traffic, and enforce security policies.
 
-#Web Server 1
-	-Hosts the website files and serves them to users
-	-Is configured to use the SSL certificate to serve encrypted traffic
+**SSL Certificate**:
+- The SSL certificate is used to serve www.foobar.com over HTTPS. It encrypts data transmitted between the web server and users' browsers, ensuring the confidentiality and integrity of data in transit.
 
-#Web Server 2
-	-Hosts the same website files as Web Server 1 and serves them to users
-	-Is configured to use the SSL certificate to serve encrypted traffic
+**Monitoring Clients (Data Collectors)**:
+- Monitoring is crucial for tracking the health and performance of the infrastructure. Monitoring clients (data collectors) gather data from servers, databases, and other components, which is then sent to a monitoring service like Sumo Logic. This data helps in identifying issues, optimizing performance, and ensuring the system's reliability.
 
+**Why Firewalls**:
+- Firewalls are used to secure the infrastructure by controlling incoming and outgoing traffic. They filter and block potentially harmful traffic, protecting the servers from attacks and unauthorized access.
 
-#Database Server
-	-Stores the website database.
-	-Is only accessible to the web servers.
+**Why HTTPS**:
+- HTTPS is used to secure the transmission of data between the server and users. It encrypts data, preventing eavesdropping and tampering. This is essential for protecting sensitive information and user privacy.
 
-Firewalls are added to prevent unauthorized access to the network and protect against cyber attacks. They act as a barrier between the internet and the network, filtering out unwanted traffic and allowing only authorized traffic to pass through.
+**Purpose of Monitoring**:
+- Monitoring is used to:
+   - Identify performance bottlenecks.
+   - Detect security threats or breaches.
+   - Ensure high availability by detecting server or component failures.
+   - Monitor application and server health.
 
-The SSL certificate will be installed on the load balancer and the web servers. This will allow the website to be served over HTTPS. HTTPS is used to encrypt the traffic between the user’s browser and the web server, making it more secure. It is important to use HTTPS because it protects sensitive information such as passwords, credit card numbers, and other personal data from being intercepted by hackers or being sent in plain text over the network infrastructure or channels.
+**Data Collection for Monitoring**:
+- The monitoring tool collects data through monitoring clients (data collectors) installed on each server. These clients collect metrics, logs, and other data and send it to the monitoring service for analysis.
 
-Monitoring is used to track the performance of the web infrastructure and identify any issues that may arise. Monitoring clients collect data on various aspects of the infrastructure such as server uptime, response time, and resource utilization. Sumologic is one example of a monitoring service that can be used to collect data.
+**Monitoring Web Server QPS**:
+- To monitor web server QPS (Queries Per Second), you would configure the monitoring tool to collect request and response data from the web server, count the number of requests per second, and provide alerts or reports based on this metric.
 
-To monitor web server queries per second (QPS), we can use a tool like Apache JMeter or Gatling. These tools simulate user traffic on the website and measure the number of queries per second (QPS) that the server can handle.
+**Issues with the Infrastructure**:
+1. **Terminating SSL at the Load Balancer Level**:
+   - Terminating SSL at the load balancer may be considered an issue if the load balancer is compromised. While it's a common practice for performance reasons, it means that data is decrypted at the load balancer before being forwarded to the web server. If the load balancer is breached, sensitive data can be exposed.
 
-This infrastructure is reliable because it uses a load balancer to distribute traffic evenly across the web servers. This ensures that the website can handle high levels of traffic without any downtime. Additionally, the database server is only accessible to the web servers, which helps to protect it from attacks.
+2. **Single MySQL Server Capable of Accepting Writes**:
+   - Having only one MySQL server that can accept writes is a single point of failure for the database. If this server goes down, write operations can't be performed, causing potential data loss or service disruptions.
 
-This infrastructure is scalable because it is easy to add more web servers to handle increased traffic. Simply add a new web server and connect it to the load balancer. The 
-
-This infrastructure is secure because it uses three firewalls to protect the website from attacks. The first firewall is located in front of the load balancer and blocks malicious traffic and unauthorized access. The second firewall is located between the load balancer and the web servers and protects the web servers from direct attacks. The third firewall is located between the web servers and the database server and protects the database server from direct attacks.
-
-However one issue with this infrastructure is that terminating SSL at the load balancer level can be an issue because it exposes sensitive information such as session cookies to potential attackers. Another issue is having only one MySQL server capable of accepting writes because it creates a single point of failure. Finally, having servers with all the same components (database, web server and application server) might be a problem because it can lead to performance bottlenecks and make it difficult to scale.
-
-In conclusion this three server web infrastructure is secure, reliable, scalable, and monitored. It is a good choice for businesses that need a website that can handle high levels of traffic without any downtime.
-
+3. **Servers with Identical Components**:
+   - Having servers with all the same components (database, web server, and application server) can be problematic because it doesn't provide redundancy or load balancing at the application layer. A more resilient architecture would include multiple application servers behind the load balancer for better fault tolerance and scalability.

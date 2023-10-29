@@ -1,63 +1,50 @@
 1. Distributed web infrastructure
+This design implements a three-server web infrastructure to host the website www.foobar.com. The infrastructure includes one web servers, one application server, one load balancer (HAproxy), one set of application files (code base), and one database (MySQL). It addresses the limitations of the previous single-server setup and provides better performance, fault tolerance, and scalability.
 
-This design implements a three-server web infrastructure to host the website www.foobar.com. The infrastructure includes two web servers, one application server, one load balancer (HAproxy), one set of application files (code base), and one database (MySQL). It addresses the limitations of the previous single-server setup and provides better performance, fault tolerance, and scalability.
+ **Components and their Roles**
 
-https://drive.google.com/file/d/1LyfE7ZF949TT51fsdt914kgdm0ksfwRq/view?usp=sharing
+1. **Server 1**:
+   - Web Server: Nginx
+   - Application Server
+   - Application Files (Code Base)
 
-## Components and their Roles
+2. **Server 2**:
+   - Database: MySQL (Primary)
 
-1. Server 1 (Linux):
-   - The first server hosts the operating system (Linux) and acts as a web server (Nginx) and an application server.
-   - Nginx handles incoming HTTP requests and forwards dynamic content requests to the application server.
-   - The application server processes these dynamic requests, interacts with the database, and generates responses.
+3. **Server 3**:
+   - Load Balancer: HAproxy
+   - Database: MySQL (Replica)
 
-2. Server 2 (Linux):
-   - The second server acts as a web server (Nginx) and an application server, similar to Server 1.
-   - Having two servers allows for redundancy and load balancing, improving performance and high availability.
+![screenshote](https://drive.google.com/file/d/1BhEcBn4CdK8jS9Q9IWfjhtvbh8tBfln_/view?usp=sharing)
 
-3. Load Balancer (HAproxy):
-   - The load balancer distributes incoming traffic across multiple web servers (Server 1 and Server 2).
-   - It uses a distribution algorithm (round-robin, least connections, etc.) to evenly distribute requests among the servers, preventing overloading on a single server.
+**Web Server and Application Server (Server 1)**:
+- Web Server (Nginx): It handles incoming HTTP requests and serves static content while also forwarding dynamic requests to the application server.
+- Application Server: It hosts the web application's codebase, processes dynamic content, and communicates with the database server.
+- Application Files: These are the code and files that make up the website and its functionality.
 
-4. Application Files (Code Base):
-   - The code base contains the website's application files, including HTML, CSS, PHP scripts, and other necessary resources.
-   - Both Server 1 and Server 2 use the same code base to ensure consistency across the web servers.
+**Database (Server 2 and Server 3)**:
+- Primary Database (Server 2): This server hosts the primary (master) database. It's responsible for handling write operations.
+- Replica Database (Server 3): This server hosts a replica (slave) database. It receives data from the primary database and can handle read operations. This setup allows for data redundancy and load distribution.
 
-5. Database (MySQL Primary-Replica Cluster):
-   - The database implements a Primary-Replica (Master-Slave) cluster to improve database performance and redundancy.
-   - The Primary node handles both read and write operations, while the Replica node(s) asynchronously replicate data from the Primary node.
-   - This setup allows for load balancing of read queries across multiple Replica nodes.
+**Load Balancer (Server 3)**:
+- HAproxy: It distributes incoming user requests across the two application servers for load balancing and high availability.
 
-## Specifics about the Infrastructure
+**Distribution Algorithm**:
+- The load balancer (HAproxy) is configured with a Round Robin distribution algorithm. This means that each incoming request is forwarded to the next available application server in a circular order. This approach ensures an even distribution of requests among the application servers.
 
-Reasons for Additional Elements:
+**Active-Active vs. Active-Passive**:
+- This infrastructure employs an Active-Active setup. Both the primary and replica databases are actively serving traffic. In contrast, an Active-Passive setup would have one database (either primary or replica) actively serving traffic while the other is in standby mode, ready to take over if the active one fails. Active-Active provides better read scaling and redundancy, but it can be more complex to set up.
 
-- Server 2: Adding a second server provides redundancy and load balancing, improving the website's performance and fault tolerance. It ensures that if one server fails, the other can handle incoming traffic.
-- Load Balancer (HAproxy): Introducing a load balancer that distributes incoming traffic across multiple servers, preventing overloading and enabling horizontal scaling.
-- Database Primary-Replica Cluster: This configuration enhances database performance by offloading read queries to the Replica node(s) while maintaining data redundancy and high availability.
+**Database Primary-Replica Cluster**:
+- The primary-replica cluster (Master-Slave) setup is used to ensure data redundancy, fault tolerance, and load distribution. The primary database handles write operations and replicates data to the replica database, which handles read operations. This setup enhances data availability and performance.
 
-Load Balancer Distribution Algorithm:
+**Difference between Primary and Replica**:
+- The primary database is responsible for handling write operations, ensuring data consistency. It's the authoritative source for data changes.
+- The replica database primarily handles read operations, reducing the load on the primary database and improving read performance. It contains a copy of the data from the primary database and is used for redundancy and scalability.
 
-The load balancer (HAproxy) is configured with a "round-robin" distribution algorithm. It evenly distributes incoming requests to each web server in a circular manner. This ensures that each server receives an equal share of traffic, providing a fair distribution of workloads.
-
-Active-Active vs. Active-Passive Setup:
-
-- Active-Active Setup: In an Active-Active setup, both web servers (Server 1 and Server 2) are actively handling incoming traffic simultaneously. The load balancer distributes requests among the active servers, providing better performance and redundancy.
-- Active-Passive Setup: In an Active-Passive setup, one server (typically Server 1) actively handles incoming traffic, while the other server (Server 2) remains in a standby or passive state. If the active server fails, the load balancer redirects traffic to the passive server, ensuring high availability but utilizing only one server at a time.
-
-Database Primary-Replica Cluster:
-
-In a Primary-Replica cluster, the Primary node handles both read and write operations, making it the authoritative source for data. The Replica node(s) asynchronously replicate data from the Primary node, ensuring data redundancy.
-
-Difference between Primary and Replica Nodes:
-
-- Primary Node: The Primary node is responsible for handling both read and write operations from the application. It is the authoritative source for data and ensures consistency across the database.
-- Replica Node: The Replica node(s) are read-only copies of the Primary node. They asynchronously replicate data from the Primary node to offload read queries, improving overall database performance and scalability. The application uses the Replica nodes for read-heavy operations, reducing the load on the Primary node.
-
-## Issues with the Infrastructure
-
-- Single Point of Failure (SPOF): The load balancer itself can become a single point of failure. If the load balancer fails, it can disrupt access to the website. To address this, introducing a redundant load balancer can help ensure high availability.
-- Security Issues: The infrastructure lacks proper security measures such as a firewall and HTTPS encryption. This can expose the system to potential cyber threats and data breaches. Implementing a firewall and enabling HTTPS encryption is crucial to safeguarding the infrastructure and user data.
-- No Monitoring: The lack of monitoring tools means there is no visibility into the health and performance of the infrastructure. Monitoring tools are essential for identifying issues, troubleshooting, and optimizing the system for better performance and reliability.
+**Issues with the Infrastructure**:
+1. **Single Point of Failure (SPOF)**: There is still a single point of failure in the load balancer. If the load balancer fails, it can disrupt traffic distribution.
+2. **Security Issues**: The design does not include a firewall or HTTPS, which can leave the infrastructure vulnerable to security threats.
+3. **No Monitoring**: There's a lack of monitoring tools and practices, making it challenging to detect and respond to issues promptly.
 
 
