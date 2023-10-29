@@ -4,11 +4,6 @@
 
 This project focuses on designing web infrastructure using a single, distributed, secured and scale up server design concepts. The infrastructure comprises various components to host a website accessible via the domain name www.foobar.com. The main components include the LAMP stack (Linux, Apache, MySQL, PHP), a web server (Nginx), an application server, and a MySQL database.
 
-# Project Readme: Scalable Web Infrastructure with HAProxy Load Balancer
-
-## Overview
-
-This project focuses on designing a scalable web infrastructure with a high availability load balancer (HAProxy). The goal is to ensure reliability, fault tolerance, and efficient traffic distribution. The infrastructure separates the web server, application server, and database components on dedicated servers, and leverages a load balancer cluster for scaling and redundancy.
 
 ## Project Components
 
