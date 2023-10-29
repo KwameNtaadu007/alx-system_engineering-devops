@@ -17,7 +17,7 @@ This design builds on the distrubuted design by hosting www.foobar.com securely.
 - Database: MySQL (Replica)
 - Firewall 3
 
-//Diagram
+[Screenshot](https://drive.google.com/file/d/10-KTsHRsc9lQ9KUezGP9WOcL7vrDY9hU/view?usp=sharing)
 
 **Firewalls**:
 - Firewalls are added to enhance security by controlling incoming and outgoing network traffic. They help protect the servers from unauthorized access, prevent malicious traffic, and enforce security policies.
