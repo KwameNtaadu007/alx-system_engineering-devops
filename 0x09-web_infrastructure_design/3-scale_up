@@ -8,37 +8,50 @@ This design expands the previous infrastructure to include one more server, sepa
 - Firewall
 - SSL Termination
 - Monitoring Client
-- HAproxy Node 1 (Load Balancer)
+
 
 **Server 2**:
-- Application Server
+- Database: MySQL (Primary)
 - Firewall
-- Monitoring Client
-- HAproxy Node 2 (Load Balancer)
 
 **Server 3**:
-- Database: MySQL
+- HAproxy Node 1 (Load Balancer)
 - Firewall
+- Database: MySQL (Replica)
 - Monitoring Client
 
-//Diagram
+**Server 4**:
+- Application Server
+- Firewall
+- HAproxy Node 2 (Load Balancer)
+- Monitoring Client
+
+https://drive.google.com/file/d/1JaHPatlzolc8lza_0UKgJOh-z3jIco7v/view?usp=sharing
 
 1. **Web Server (Server 1)**:
    - The web server (Nginx) is responsible for handling HTTP requests, serving static content, and acting as the entry point for user traffic.
    - SSL termination at the web server is responsible for decrypting incoming HTTPS requests.
-   - A monitoring client collects server metrics and performance data to ensure the web server's health.
-   - HAproxy Node 1 is one of the load balancer nodes that will distribute traffic between the web and application servers.
+ 
 
-2. **Application Server (Server 2)**:
+2. **Database Server (Server 2)**:
+   - The database server (MySQL) is responsible for storing and managing the website's data.
+   - A firewall is used to control and secure incoming and outgoing database traffic.
+   - A monitoring client collects metrics and performance data to monitor the health of the database server.
+
+3. **Load Balancing and Database Replica (Server 3)**:
+   - The application server hosts the application code and processes dynamic content generation.
+   - A firewall is used to control and secure incoming and outgoing traffic to the application server.
+   - A monitoring client collects metrics and performance data to monitor the health of the application server.
+   - HAproxy Node 2 is the second node of the load balancer cluster, ensuring high availability for the application layer.
+   - Holds the Database replica forming a backup of the primary data.
+
+
+4. **Application Server (Server 4)**:
    - The application server hosts the application code and processes dynamic content generation.
    - A firewall is used to control and secure incoming and outgoing traffic to the application server.
    - A monitoring client collects metrics and performance data to monitor the health of the application server.
    - HAproxy Node 2 is the second node of the load balancer cluster, ensuring high availability for the application layer.
 
-3. **Database Server (Server 3)**:
-   - The database server (MySQL) is responsible for storing and managing the website's data.
-   - A firewall is used to control and secure incoming and outgoing database traffic.
-   - A monitoring client collects metrics and performance data to monitor the health of the database server.
 
 **Why These Components**:
 
