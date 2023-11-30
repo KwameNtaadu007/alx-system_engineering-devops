@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
-#Configures Nginx server to have a custom 404 page that contains the string
+# Bash script that configures apache server and 301 page
 
+# update
 sudo apt-get update
+
+# install nginx
 sudo apt-get install -y nginx
 
-# code to redirect a specific endpoint (eg: redirect /redirect_me to https://koomson.tech)
+# setup index page and 301 redirect
 echo "Hello World!" | sudo tee /var/www/html/index.html
-string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.koomson.tech permanent;"
-sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+replacement_str="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.engdev.com permanent;"
+sudo sed -i "s/server_name _;/$replacement_str/" /etc/nginx/sites-enabled/default
 
-# code to create error page and add a redirect for error 404
+# setup 404 page
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
-string_for_replacement="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
-sudo sed -i "s/listen 80 default_server;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+replacement_str="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+sudo sed -i "s/listen 80 default_server;/$replacement_str/" /etc/nginx/sites-enabled/default
 
-# restart the server
 sudo service nginx restart
