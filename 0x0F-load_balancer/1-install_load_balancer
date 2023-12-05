@@ -4,29 +4,30 @@
 # Distribute requests using a roundrobin algorithm
 # Make sure that HAProxy can be managed via an init script
 
-# Install and configure HAproxy on my lb-01 server.
+# Update repositories and install HAProxy
 sudo apt-get -y update
-apt-get -y install haproxy
+sudo apt-get -y install haproxy
 
-# edit config file
-server_config=\
-"
-frontend  engdev_frontend
+# Define the server configuration and append it to the HAProxy configuration file
+server_config="
+frontend engdev_frontend
         bind *:80
         mode http
         default_backend engdev_backend
+
 backend engdev_backend
         balance roundrobin
         server 227668-web-01 34.201.61.30:80 check
         server 227668-web-02 3.90.83.253:80 check
 "
-echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg >/dev/null
 
-# enable haproxy to be started by init script
-echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+# Enable HAProxy to be started by the init script
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy >/dev/null
 
-# Testing the HAproxy configuration file
+# Test the HAProxy configuration file for any syntax errors
 sudo haproxy -c -f /etc/haproxy/haproxy.cfg
 
-# Restart the haproxy  service
+# Restart the HAProxy service to apply the changes
 sudo service haproxy restart
+
