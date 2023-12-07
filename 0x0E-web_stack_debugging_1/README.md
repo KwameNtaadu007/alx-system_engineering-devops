@@ -1,4 +1,4 @@
-**Project Name: Web Stack Debugging #1**
+**Web Stack Debugging #1**
 
 **Description:**
 
