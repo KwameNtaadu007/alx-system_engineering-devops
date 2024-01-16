@@ -1,62 +1,69 @@
 #!/usr/bin/python3
-
+"""
+Function that queries the Reddit API and prints
+the top ten hot posts of a subreddit
+"""
+import re
 import requests
 
-def count_words(subreddit, word_list, after=None, word_counts={}):
-    # Reddit API endpoint for hot posts
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=100&after={after}"
-    
-    # Set custom User-Agent to avoid issues
-    headers = {'User-Agent': 'MyRedditBot/1.0'}
-    
-    try:
-        # Make a GET request to the Reddit API
-        response = requests.get(url, headers=headers)
-        
-        # Check if the request was successful (status code 200)
-        if response.status_code == 200:
-            # Parse the JSON response
-            subreddit_data = response.json()
-            
-            # Extract and count the occurrences of keywords in the titles
-            for post in subreddit_data['data']['children']:
-                title = post['data']['title'].lower()
-                for keyword in word_list:
-                    keyword_lower = keyword.lower()
-                    if keyword_lower in title:
-                        word_counts[keyword_lower] = word_counts.get(keyword_lower, 0) + title.count(keyword_lower)
-            
-            # Check if there are more pages (next page marker 'after' is present)
-            after = subreddit_data['data']['after']
-            if after is not None:
-                # Make a recursive call with the updated 'after' parameter
-                return count_words(subreddit, word_list, after, word_counts)
-            else:
-                # If no more pages, print the word counts in the required format
-                print_results(word_counts)
-        else:
-            # If the subreddit is invalid, print nothing
-            return
-    except Exception as e:
-        print(f"Error: {e}")
+
+def add_title(dictionary, hot_posts):
+    """ Adds item into a list """
+    if len(hot_posts) == 0:
         return
 
-def print_results(word_counts):
-    # Sort the word counts in descending order by count and alphabetically by keyword
-    sorted_word_counts = sorted(word_counts.items(), key=lambda x: (-x[1], x[0]))
-    
-    # Print the results
-    for keyword, count in sorted_word_counts:
-        print(f"{keyword}: {count}")
+    title = hot_posts[0]['data']['title'].split()
+    for word in title:
+        for key in dictionary.keys():
+            c = re.compile("^{}$".format(key), re.I)
+            if c.findall(word):
+                dictionary[key] += 1
+    hot_posts.pop(0)
+    add_title(dictionary, hot_posts)
 
-if __name__ == '__main__':
-    import sys
-    
-    if len(sys.argv) < 3:
-        print("Usage: {} <subreddit> <list of keywords>".format(sys.argv[0]))
-        print("Ex: {} programming 'python java javascript'".format(sys.argv[0]))
-    else:
-        subreddit = sys.argv[1]
-        keywords = sys.argv[2].split()
-        count_words(subreddit, keywords)
 
+def recurse(subreddit, dictionary, after=None):
+    """ Queries the Reddit API """
+    u_agent = 'Mozilla/5.0'
+    headers = {
+        'User-Agent': u_agent
+    }
+
+    params = {
+        'after': after
+    }
+
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    res = requests.get(url,
+                       headers=headers,
+                       params=params,
+                       allow_redirects=False)
+
+    if res.status_code != 200:
+        return None
+
+    dic = res.json()
+    hot_posts = dic['data']['children']
+    add_title(dictionary, hot_posts)
+    after = dic['data']['after']
+    if not after:
+        return
+    recurse(subreddit, dictionary, after=after)
+
+
+def count_words(subreddit, word_list, dictionary=None):
+    """ Init function """
+    if dictionary is None:
+        dictionary = {}
+
+    for word in word_list:
+        word = word.lower()
+        if word not in dictionary:
+            dictionary[word] = 0
+
+    recurse(subreddit, dictionary)
+
+    sorted_items = sorted(dictionary.items(), key=lambda kv: (-kv[1], kv[0]))
+    for item in sorted_items:
+        if item[1] > 0:
+            print("{}: {}".format(item[0], item[1]))
