@@ -1,6 +1,6 @@
-#0x06. Regular expression
+# 0x06. Regular expression
 
-##This exercise is about building a regular expression using Oniguruma, a regular expression library that which is used by Ruby by default. Note that other regular expression libraries sometimes have different properties.
+## This exercise is about building a regular expression using Oniguruma, a regular expression library that which is used by Ruby by default. Note that other regular expression libraries sometimes have different properties.
 
 The Ruby code that you should use is as follows:
 
